@@ -1,11 +1,11 @@
 #bochs setup:
 ---
-##compile on Mac OS X:
- * `configure` generates Makefile as input of `make`  
-   `make` does selective compile, i.e. it does not compile unchanged code again.  
-   `make clean-all` deletes all '.o' files in $install_dir including subdirs. `make clean` excludes subdirs.
+##compile bochs on MacOS Sierra:
+ * complication:
+	 * bochs on macos platform has bugs with x11, homebrew formula for bochs uses x11, so `brew install bochs` emits error.
+	 * apple redirects gcc to clang, clang does not support some of the gcc's flags, so using `sh .conf.macosx` gives error saying gcc cannot generate executable files.
 
- * compile:
+ * solution:
 		
 		#export CLICOLOR=1 to enable terminal color.
 		john$ gunzip -c bochs-2.6.8.tar.gz | tar xvf -
@@ -27,8 +27,32 @@
             --prefix=$HOME/opt/bochs
 		#export BXSHARE="$HOME/opt/bochs/share/bochs"
 		#export PATH="$PATH:$HOME/opt/bochs/bin"
+ * bochsrc.bxrc:
+
+		# how much memory the emulated machine will have
+		megs: 32
+		
+		# filename of ROM images
+		romimage: file=$BXSHARE/BIOS-bochs-latest
+		vgaromimage: file=$BXSHARE/VGABIOS-elpin-2.40
+		
+		# what disk images will be used
+		floppya: 1_44=TINIX.IMG, status=inserted
+		
+		# choose the boot disk.
+		boot: a
+		
+		# where do we send log messages?
+		log: bochsout.txt
+		
+		# disable the mouse, since Tinix is text only
+		mouse: enabled=0
+		
+		# enable key mapping, using US layout as default.
+		#keyboard: keymap=$BXSHARE/keymaps/x11-pc-us.map
 
 ##hello, bochs:
+ * 'Orange os book' -- [(code)](codes/osfromscratch) [(book)](books/orangesosbook.pdf)
  * using book's tinix:
 
 		john$ cd $TINIX/chapter1/b/
@@ -75,6 +99,6 @@
 		#press c to continue.
 		
 	=
-		#meanwhile on sdl window:
+		#meanwhile on the sdl window:
 	![hellobochs](images/hellobochs.png)
 * see the Red "Hello"? it works!

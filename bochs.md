@@ -27,7 +27,39 @@
             --prefix=$HOME/opt/bochs
 		#export BXSHARE="$HOME/opt/bochs/share/bochs"
 		#export PATH="$PATH:$HOME/opt/bochs/bin"
- * bochsrc.bxrc:
+
+##hello, os
+  * 'Orange os book' -- [(code)](codes/osfromscratch) [(book)](books/orangesosbook.pdf)
+  * asm code:
+			
+			;boot.asm
+				org     07c00h
+				mov     ax, cs
+				mov     ds, ax
+				mov     es, ax
+				call    DispStr
+				jmp     $
+			DispStr:
+				mov     ax, BootMessage
+				mov     bp, ax
+				mov     cx, 16
+				mov     ax, 01301h
+				mov     bx, 000ch
+				mov     dl, 0
+				int     10h
+				ret
+			BootMessage:            db      "Hello, OS world!"
+			times   510-($-$$)      db      0
+			dw      0xaa55
+
+  * asm: `john$ nasm -o boot.bin boot.asm`
+  * bximage:
+
+		  john$ bximage
+		  #create an fd
+		  #name: boot.img
+  * dd: `john$ dd if=boot.bin of=boot.img bs=512 count=1 conv=notrunc`
+  * bochsrc.bxrc:
 
 		# how much memory the emulated machine will have
 		megs: 32
@@ -35,28 +67,23 @@
 		# filename of ROM images
 		romimage: file=$BXSHARE/BIOS-bochs-latest
 		vgaromimage: file=$BXSHARE/VGABIOS-elpin-2.40
-		
 		# what disk images will be used
-		floppya: 1_44=TINIX.IMG, status=inserted
+		floppya: 1_44=boot.img, status=inserted
 		
 		# choose the boot disk.
-		boot: a
+		boot: floppy
 		
 		# where do we send log messages?
 		log: bochsout.txt
 		
-		# disable the mouse, since Tinix is text only
+		# disable the mouse
 		mouse: enabled=0
 		
 		# enable key mapping, using US layout as default.
-		#keyboard: keymap=$BXSHARE/keymaps/x11-pc-us.map
+		#keyboard: keymap=/usr/share/bochs/keymaps/x11-pc-us.map
 
-##hello, bochs:
- * 'Orange os book' -- [(code)](codes/osfromscratch) [(book)](books/orangesosbook.pdf)
- * using book's tinix:
-
-		john$ cd $TINIX/chapter1/b/
-		john$ bochs -f bochsrc.bxrc
+  * bochs:
+  john$ bochs -f bochsrc.bxrc
 		
 		#on debug console:
 
@@ -101,4 +128,4 @@
 	=
 		#meanwhile on the sdl window:
 	![hellobochs](images/hellobochs.png)
-* see the Red "Hello"? it works!
+  * see the Red "Hello"? it works!

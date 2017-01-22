@@ -2,6 +2,7 @@
 ---
 ##1. Theories：
  * OS
+ * CN (Computer Network)
  * AI
  * DM
  * TAOCP

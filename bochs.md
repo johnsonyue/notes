@@ -28,7 +28,7 @@
 		#export BXSHARE="$HOME/opt/bochs/share/bochs"
 		#export PATH="$PATH:$HOME/opt/bochs/bin"
 
-##hello, os
+##hello, os (MBR)
   * 'Orange's os book' -- [(code)](codes/osfromscratch) [(book)](books/orangesosbook.pdf)
   * asm code:
 			
@@ -129,3 +129,59 @@
 	meanwhile on the sdl window:
 	![hellobochs](images/hellobochs.png)
   * see the Red "Hello"? it works!
+
+---
+#hello, loader
+ * x86 asm os book [(code)](codes/booktools) [(book)](books/x86asmosbook.pdf)
+ * asm code: 
+	 * [(c08_mbr.asm)](codes/booktools/c08/c08_mbr.asm)
+	 * [(c08.asm)](codes/booktools/c08/c08.asm)
+ * asm:
+ 		
+ 		john$ nasm -o mbr.bin c08_mbr.asm 
+ 		john$ nasm -o user.bin c08.asm
+ 		
+ * bximage:
+		
+		john$ bximage
+		#create an hd
+		#name: boot.img
+		#CHS=20/16/63
+ * dd:
+ 		
+ 		john$ dd if=mbr.bin of=boot.img bs=512 count=1 conv=notrunc
+ 		john$ dd if=user.bin of=boot.img seek=100 bs=512 conv=notrunc
+
+ * bochsrc:
+
+		# how much memory the emulated machine will have
+		megs: 32
+		
+		# filename of ROM images
+		romimage: file=$BXSHARE/BIOS-bochs-latest
+		vgaromimage: file=$BXSHARE/VGABIOS-elpin-2.40
+		# what disk images will be used
+		#floppya: 1_44=boot.img, status=inserted
+		ata0-master: type=disk, path="boot.img", cylinders=20, heads=16, spt=63
+		
+		# choose the boot disk.
+		#boot: floppy
+		boot: disk
+		
+		# where do we send log messages?
+		log: bochsout.txt
+		
+		# disable the mouse
+		mouse: enabled=0
+		
+		# enable key mapping, using US layout as default.
+		#keyboard: keymap=/usr/share/bochs/keymaps/x11-pc-us.map
+
+ * bochs:
+
+		john$ bochs -f bochsrc.bxrc
+		#press 6 to start emulation
+		#press c to continue
+		
+	![hellobochs](images/helloloader.png)
+	voila!

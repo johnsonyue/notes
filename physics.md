@@ -1,5 +1,5 @@
 ##article I:
- * ref: [(Iterative Dynamics with Temporal CoherenceErin Catto)]()
+ * ref: [(Iterative Dynamics with Temporal CoherenceErin Catto)](books/IterativeDynamics.pdf)
  * overview:
 	 * tech used:  
 	 rigid body physics (刚体)

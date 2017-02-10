@@ -24,3 +24,32 @@
 
 ##vimhistory:
  * vim is the golden child of vi family.q
+
+##insert mode:
+ * `ctrl + h`, `ctrl + w`, `ctrl + u,` deletes character, word ,line respectively, (also works in tty)
+ * `ctrl + [` to switch to normal mode (same as esc)
+ * `ctrl + o` to switch to insert normal mode (one time normal mode, 
+	 * e.g. while in normal mode, `ctrl + o` then            `zz`, 
+	 * `zz` put current line in center in normal mode.
+ * `ctrl + r {register}` paste in insert mode.
+	 * 'r' stands for register
+	 * {register} addresses register, 
+		 * `[0-9]` to address plain register, can store string or line(s)
+		 * `=` to address expression register, evaluates vim script entered. 
+		 * `ctrl + r` accesses register and insert content in insert mode.
+ * unusual chars:
+	 * `ctrl + v` `{digits}`:
+		 * dec: e.g. `123`
+		 * hex: e.g. `u1234`
+	 * `ctrl + k` `{digraph code}`
+	 
+##replace mode:
+ * in normal mode `R` == `insert` key
+ * virtual replace mode
+	 * in normal mode `gR`
+	 * treats 'tab' as spaces.
+ * one-shot replace
+	 * `r`, `gr` only replaces current character
+	 * stay in normal mode
+
+##visual mode:

@@ -14,6 +14,7 @@
  * Physics Engine & GameDev
 
 ##2. Utils:
+ * latex
  * vim
 
 ##3. Languages:

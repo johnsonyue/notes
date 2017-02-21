@@ -1,4 +1,4 @@
-##boot.s & head.s
+##boot.s & head.s (zhaojiong)
  * mm image:
 ![](images/boot&head.jpg)
  * [PIT chip](http://wiki.osdev.org/Programmable_Interval_Timer) (8253):
@@ -64,3 +64,139 @@
 		 3. timer_interrupt --> user task1/0 (normal interrupt returning):
 			 * for reasons described in "2.", nt=0,
 			 * `iret` in timer_interrupt simply returns without switching task.
+
+##kernel organization:
+ * diagram:
+![](images/kernel.png)
+ * system call & libs:
+	 * lib function is a encapsulation of system calls, 
+		 * implemented using macros, and inline asm.
+	 * who wrote the libs:
+		 * c is just a compiler.
+		 * libs provides API (functions) for user programs,
+		 * POSIX is a API standard for *nix systems. Standards make user programs portable.
+		 * so the answer: libs should be written by OS developers?
+
+##bootsect&setup&head (linux0.11)
+ * bootsect.s:
+	 * read_it pseudo:
+
+			//pseudo code:
+			static t_int16 SYSEND=SYSSEG+SYSSIZE; //0x9000
+			static t_int16 SECTORS=***; //determined by hardware.
+			extern void read_track(t_int16 ax, t_int16 track, t_int16 sread); //int 0x13; ah=2; read sectors on a track.
+			void read_it() //read_it means to load system to 0x10000 ~ 0x90000.
+			{
+				t_int16 sread = 0; //number of sectors read on current track.
+				t_int16 head = 0; //enum{0,1}
+				t_int16 track = 0; //current track/cylinder.
+				t_int16 ax; //number of sectors to be read.
+				t_int16 es, bx; //segment base and offset.
+				while(1){
+					if (es>=SYSEND){break;} //end condition.
+					ax = SECTORS - sread;
+					if (ax*512+bx >= 65536){
+						ax = 65536 - bx;
+					} //to make sure 64KB boundries are not crossed.
+					read_track(ax, track, sread); //sread+1 tells int0x13 which sector to start with.
+					if (head == 1){
+						track++; //if "side B" is read, cont to next track.
+					}
+					else{
+						head = 1;
+					} //two sides of each track.
+					
+					sread = sread + ax; 
+					if (sread >= SECTORS){
+						sread = 0;
+					} //update sread.
+					
+					bx = bx + ax*512; //update segment offset.
+					if (bx >= 65536){
+						es += 0x1000;
+						bx = 0;
+					} //if finished reading one 64K segment, cont to next.
+				}
+
+
+	 * asm source of read_it looks something like this:
+
+		  	read_it:
+				mov ax,es
+				test ax,#0x0fff
+			die:	jne die			! es must be at 64kB boundary
+				xor bx,bx		! bx is starting address within segment
+			rp_read:
+				mov ax,es
+				cmp ax,#ENDSEG		! have we loaded all yet?
+				jb ok1_read
+				ret
+			ok1_read:
+				seg cs
+				mov ax,sectors
+				sub ax,sread
+				mov cx,ax
+				shl cx,#9
+				add cx,bx
+				jnc ok2_read
+				je ok2_read
+				xor ax,ax
+				sub ax,bx
+				shr ax,#9
+			ok2_read:
+				call read_track
+				mov cx,ax
+				add ax,sread
+				seg cs
+				cmp ax,sectors
+				jne ok3_read
+				mov ax,#1
+				sub ax,head
+				jne ok4_read
+				inc track
+			ok4_read:
+				mov head,ax
+				xor ax,ax
+			ok3_read:
+				mov sread,ax
+				shl cx,#9
+				add bx,cx
+				jnc rp_read
+				mov ax,es
+				add ax,#0x1000
+				mov es,ax
+				xor bx,bx
+				jmp rp_read
+			
+			read_track:
+				push ax
+				push bx
+				push cx
+				push dx
+				mov dx,track
+				mov cx,sread
+				inc cx
+				mov ch,dl
+				mov dx,head
+				mov dh,dl
+				mov dl,#0
+				and dx,#0x0100
+				mov ah,#2
+				int 0x13
+				jc bad_rt
+				pop dx
+				pop cx
+				pop bx
+				pop ax
+				ret
+			bad_rt:	mov ax,#0
+				mov dx,#0
+				int 0x13
+				pop dx
+				pop cx
+				pop bx
+				pop ax
+				jmp read_track
+
+ * setup.s:
+	 * 

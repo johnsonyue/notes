@@ -154,3 +154,5 @@
 			
 	![](images/hellolinux000.png)
 	Boom!
+	
+##kernel structure:

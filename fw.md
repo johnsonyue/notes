@@ -13,5 +13,3 @@
 
 	 * security-zone:  
 	![](images/topo.png)
-	
-			

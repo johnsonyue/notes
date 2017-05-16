@@ -1,6 +1,6 @@
 ##boot.s & head.s (zhaojiong)
  * mm image:
-![](images/boot&head.jpg)
+![](../images/boot&head.jpg)
  * [PIT chip](http://wiki.osdev.org/Programmable_Interval_Timer) (8253):
 	 * The PIT chip uses the following I/O ports:
 
@@ -58,7 +58,7 @@
 		 2. user task0/1 --> timer_interrupt (interrupting):
 			 * cpl=3 < dpl=0, requires stack switching
 			 * swtiches to krn_stk0 provided by tss0.
-			 ![](images/interrupt_stack.png)
+			 ![](../images/interrupt_stack.png)
 			 (**processor automatically**) pushes ss:esp, eflags, and cs:eip.
 			 * because task switching in "1." is done by `iret`, **processor automatically** resets nt in eflags.
 		 3. timer_interrupt --> user task1/0 (normal interrupt returning):
@@ -67,7 +67,7 @@
 
 ##kernel organization:
  * diagram:
-![](images/kernel.png)
+![](../images/kernel.png)
  * system call & libs:
 	 * lib function is a encapsulation of system calls, 
 		 * implemented using macros, and inline asm.

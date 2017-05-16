@@ -26,7 +26,7 @@
 
 ##computer organization
  * diagram of **traditional** PCs: (modern PCs use chipset)  
-	![](images/computer.png)  
+	![](../images/computer.png)  
 	* on-board:
 		* BIOS-ROM
 		* CMOS-RAM
@@ -88,13 +88,13 @@
 				        return 0;
 				}
 				//output: "-1,7"
-		 * example [strncmp](codes/oldlinux/examples/strncmp.c):
+		 * example [strncmp](../codes/oldlinux/examples/strncmp.c):
 
 
 ##bochs:
  * compile linux-0.11 on ubuntu:
-	 * [source](codes/oslab)
-	 * ported to [gcc-3.4](codes/gcc-3.4-ubuntu.tar.gz)
+	 * [source](../codes/oslab)
+	 * ported to [gcc-3.4](../codes/gcc-3.4-ubuntu.tar.gz)
 	 * docker:
 		 
 		 	john$ mkdir -p /home/oslab
@@ -137,22 +137,22 @@
 		 	
 		 	john$ bochs -f bochsrc.bxrc
 		 	
-	![](images/hellolinux011.png)
+	![](../images/hellolinux011.png)
 	Boom!
 
 * compile linux 0.00 on ubuntu (the one with AAAAABBBBAAAAA):
-	* [source](codes/linux-0.00):
+	* [source](../codes/linux-0.00):
 		* downloaded from [oldlinux](oldlinux.org)
 		* modifications:
 			* not compatible with newest gas,
-			* use [gcc-3.4](codes/gcc-3.4-ubuntu.tar.gz) -c instead
+			* use [gcc-3.4](../codes/gcc-3.4-ubuntu.tar.gz) -c instead
 	* docker:
 		* same as [compile linux-0.11 on ubuntu]()
 	* after make:
 
 			john$ bochs -f bochsrc-0.00.bxrc
 			
-	![](images/hellolinux000.png)
+	![](../images/hellolinux000.png)
 	Boom!
 	
 ##kernel structure:

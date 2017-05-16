@@ -267,7 +267,7 @@ see the default value of type is actually `UDP_PARIS`
 		 * 不显著选度最低的AS，（因为最有可能是客户，而客户路由器接口通常用提供商的地址空间IP）
  * Geo:
 	 * 3 sources:
-		 * public IXP info,
+		 * public IXP info, provide prefixes and geoloc for ixp
 			 * wiki ixp list, 
 			 * Looking Glass database
 			 * PeeringDB
@@ -293,3 +293,47 @@ see the default value of type is actually `UDP_PARIS`
 	 * 还要多下载前后几天的，为了防止dolphin未查询出结果的情况。
  * BGP:
 	 * IP到ASN的转换，先匹配最长前缀，再匹配该前缀的起源AS
+
+
+##RIPE Atlas:
+ * Visualization Tools:
+	 * [link](https://atlas.ripe.net/measurements-and-tools/tools/)
+	 * 需要openip map来帮助可视化
+ * Probing source code:
+	 * adopt busy box as vitulization solution.
+ * 两种API:
+	 * REST interface over HTTPS
+	 * Streaming API using web-socket
+ * RESTful API:
+	 * 一些细节：
+		 * 概念：URL包含对象（object），称做资源（Resource）,通过参数（parameter）来过滤。
+		 * 惯例：object类名应当小写，复数
+	 * 资源：
+		 * 两类：对象列表和对象详述
+		 * 对象列表数据域：
+			 * 分页域：  
+			 count, previous, next (each page 500 items)
+			 * 结果域：  
+			 results (结果对象列表，结果对象包含id和type)
+		 * 对象详述：
+			 * URL具有results中所说的id和type
+		 * 所以，id和type时对象的唯一标识符
+	 * 参数：
+		 * fields参数，相当于mysql的select
+		 * include参数自动递归查询。
+		 * 范围查询?<field_name>__<relation>:  
+		 relation有in,gt(e),lt(e)
+	 * 对象：
+		 * 三类：测量（measurements），测量点（probes），结果（results）。前两个通过元信息API下载，结果通过流API下载。
+		 * 测量：
+			 * 测量分两类：一次测量（one-off），系列测量（a series of）
+			 * 测量信息域：  
+			 元信息，  
+			 说明信息（specification），源／目标IP／方法等
+			 状态信息
+			 * 操作：  
+			 create（通过definition对象通过POST来发起），
+			 stop
+			 * 查询：
+			 
+			 

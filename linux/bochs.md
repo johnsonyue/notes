@@ -29,7 +29,7 @@
 		#export PATH="$PATH:$HOME/opt/bochs/bin"
 
 ##hello, os (MBR)
-  * 'Orange's os book' -- [(code)](codes/osfromscratch) [(book)](books/orangesosbook.pdf)
+  * 'Orange's os book' -- [(code)](../codes/osfromscratch) [(book)](books/orangesosbook.pdf)
   * asm code:
 			
 		;boot.asm
@@ -127,15 +127,15 @@
 		
   
 	meanwhile on the sdl window:
-	![hellobochs](images/hellobochs.png)
+	![hellobochs](../images/hellobochs.png)
   * see the Red "Hello"? it works!
 
 ---
 #hello, loader
- * x86 asm os book [(code)](codes/booktools) [(book)](books/x86asmosbook.pdf)
+ * x86 asm os book [(code)](../codes/booktools) [(book)](books/x86asmosbook.pdf)
  * asm code: 
-	 * [(c08_mbr.asm)](codes/booktools/c08/c08_mbr.asm)
-	 * [(c08.asm)](codes/booktools/c08/c08.asm)
+	 * [(c08_mbr.asm)](../codes/booktools/c08/c08_mbr.asm)
+	 * [(c08.asm)](../codes/booktools/c08/c08.asm)
  * asm:
  		
  		john$ nasm -o mbr.bin c08_mbr.asm 
@@ -183,5 +183,5 @@
 		#press 6 to start emulation
 		#press c to continue
 		
-	![hellobochs](images/helloloader.png)
+	![hellobochs](../images/helloloader.png)
 	voila!

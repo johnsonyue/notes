@@ -2,29 +2,29 @@
 ---
 ##system registers:
  * EFLAGS (`reg`):
-![](images/eflags.png)
+![](../images/eflags.png)
  * mmregs (`sreg`):
-![](images/mmregs.png)
+![](../images/mmregs.png)
  * cregs (`creg`):
-![](images/cregs.png)
+![](../images/cregs.png)
  * system instructions:
 	 * instructions to manipulate system registers.
 
 ##memory management:
  * address transformation:
-![](images/address_transform.png)
+![](../images/address_transform.png)
  * selector:
-![](images/selector.png)
+![](../images/selector.png)
 	 * RPL (Requested Privilege Level)
 	 * TI (Table Index)
  * descriptor:
 	 * segment descriptor:
-![](images/descriptor.png)
+![](../images/descriptor.png)
 	 * call gate descriptor:
-![](images/callgate.png)
+![](../images/callgate.png)
 	 * (interrupt, trap, task) gate descriptor:
-![](images/interrupt.png)
+![](../images/interrupt.png)
 	 * tss descriptor:
-![](images/tss_descriptor.png)
+![](../images/tss_descriptor.png)
  * page_item:
-![](images/page_item.png)
+![](../images/page_item.png)
